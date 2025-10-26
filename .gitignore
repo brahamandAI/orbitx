@@ -1,0 +1,184 @@
+# ===========================================
+# DEPENDENCIES & PACKAGE MANAGERS
+# ===========================================
+
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# ===========================================
+# BUILD OUTPUTS & DISTRIBUTION
+# ===========================================
+
+# React build outputs
+/build
+/dist
+/out
+.next/
+.next
+
+# Electron build outputs
+/dist-electron/
+/app-builds/
+/release-builds/
+*.dmg
+*.exe
+*.deb
+*.rpm
+*.AppImage
+*.snap
+
+# ===========================================
+# ENVIRONMENT & CONFIGURATION
+# ===========================================
+
+# Environment variables (keep .env.production encrypted)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production
+.env.git
+
+# Encryption keys (NEVER commit these!)
+ENCRYPTION_KEY
+*.key
+*.pem
+
+# ===========================================
+# TESTING & COVERAGE
+# ===========================================
+
+# Test coverage
+/coverage
+.nyc_output
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# ===========================================
+# DEVELOPMENT TOOLS & DEBUGGING
+# ===========================================
+
+# Debug logs
+firebase-debug.log*
+firebase-debug.*.log*
+*.log
+
+# Development databases
+*.sqlite
+*.sqlite3
+*.db
+
+# ===========================================
+# PROCESS MANAGEMENT
+# ===========================================
+
+# PM2 process files
+.pm2/
+ecosystem.config.js.bak
+
+# ===========================================
+# OPERATING SYSTEM FILES
+# ===========================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ===========================================
+# ARCHIVES & BACKUPS
+# ===========================================
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+archive.zip
+livefile.zip
+backup2/
+
+# ===========================================
+# PYTHON (if any Python scripts exist)
+# ===========================================
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+myenv/
+ENV/
+env.bak/
+venv.bak/
+
+# ===========================================
+# TEMPORARY & CACHE FILES
+# ===========================================
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Cache directories
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# ===========================================
+# PROJECT SPECIFIC
+# ===========================================
+
+# Test files (remove if you want to keep them)
+test-api.js

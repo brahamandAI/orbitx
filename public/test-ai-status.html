@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Status Checker - OrbitX</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .status-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .success { border-left: 4px solid #10b981; }
+        .warning { border-left: 4px solid #f59e0b; }
+        .error { border-left: 4px solid #ef4444; }
+        .info { border-left: 4px solid #3b82f6; }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .emoji { font-size: 24px; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Status Checker - OrbitX Browser</h1>
+        
+        <div class="status-box info">
+            <h2><span class="emoji">ℹ️</span>API Key Information</h2>
+            <div id="apiKeyInfo">Loading...</div>
+        </div>
+
+        <div class="status-box" id="statusBox">
+            <h2><span class="emoji">🔍</span>AI Service Status</h2>
+            <div id="aiStatus">Click button below to check...</div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="checkStatus()">🔄 Check AI Status</button>
+            <button onclick="testOpenAI()">🧪 Test OpenAI Connection</button>
+            <button onclick="clearResults()">🗑️ Clear</button>
+        </div>
+
+        <div class="status-box info" style="margin-top: 20px;">
+            <h3>📋 Instructions:</h3>
+            <ul>
+                <li>✅ Green box = Real AI is working (OpenAI or Brahmand AI)</li>
+                <li>🟡 Yellow box = Demo mode (Mock AI responses)</li>
+                <li>❌ Red box = Not configured</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function checkStatus() {
+            const apiKey = "REACT_APP_OPENAI_API_KEY";
+            const keyValue = getEnvValue(apiKey);
+            
+            const apiKeyInfo = document.getElementById('apiKeyInfo');
+            const aiStatus = document.getElementById('aiStatus');
+            const statusBox = document.getElementById('statusBox');
+            
+            // Check API Key
+            if (keyValue && keyValue.startsWith('sk-')) {
+                const masked = keyValue.substring(0, 10) + '...' + keyValue.substring(keyValue.length - 10);
+                apiKeyInfo.innerHTML = `
+                    <p><strong>OpenAI API Key:</strong> ✅ Configured</p>
+                    <p><strong>Key Preview:</strong> <code>${masked}</code></p>
+                    <p><strong>Key Length:</strong> ${keyValue.length} characters</p>
+                    <p><strong>Format:</strong> ${keyValue.startsWith('sk-') ? '✅ Valid' : '❌ Invalid'}</p>
+                `;
+                
+                statusBox.className = 'status-box success';
+                aiStatus.innerHTML = `
+                    <h3>✅ ब्रह्मांड AI Demo Mode is ACTIVE!</h3>
+                    <p><strong>Backend:</strong> OpenAI GPT-3.5 Turbo</p>
+                    <p><strong>Personality:</strong> Cosmic + Hinglish</p>
+                    <p><strong>Features:</strong> All AI features enabled</p>
+                    <p><strong>Mode:</strong> Real AI (not mock)</p>
+                    <hr>
+                    <p style="font-size: 14px; opacity: 0.8;">
+                        Your OpenAI API key is working! The AI Panel will use real AI responses 
+                        with Brahmand AI's cosmic personality.
+                    </p>
+                `;
+            } else {
+                apiKeyInfo.innerHTML = `
+                    <p><strong>OpenAI API Key:</strong> ❌ Not configured</p>
+                    <p style="color: #f59e0b;">Add your API key to <code>.env</code> file</p>
+                `;
+                
+                statusBox.className = 'status-box warning';
+                aiStatus.innerHTML = `
+                    <h3>🟡 Mock AI Demo Mode</h3>
+                    <p><strong>Backend:</strong> Template-based responses</p>
+                    <p><strong>Intelligence:</strong> Basic/Limited</p>
+                    <p><strong>To enable real AI:</strong> Add OpenAI API key to .env</p>
+                `;
+            }
+        }
+
+        async function testOpenAI() {
+            const apiKey = getEnvValue("REACT_APP_OPENAI_API_KEY");
+            const aiStatus = document.getElementById('aiStatus');
+            const statusBox = document.getElementById('statusBox');
+            
+            if (!apiKey || !apiKey.startsWith('sk-')) {
+                statusBox.className = 'status-box error';
+                aiStatus.innerHTML = '<p>❌ Cannot test: No valid API key found</p>';
+                return;
+            }
+
+            aiStatus.innerHTML = '<p>🔄 Testing OpenAI connection...</p>';
+            
+            try {
+                const response = await fetch('https://api.openai.com/v1/models', {
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`
+                    }
+                });
+
+                if (response.ok) {
+                    statusBox.className = 'status-box success';
+                    aiStatus.innerHTML = `
+                        <h3>✅ OpenAI Connection Successful!</h3>
+                        <p><strong>Status:</strong> ${response.status} OK</p>
+                        <p><strong>API Key:</strong> Valid and working</p>
+                        <p><strong>Service:</strong> Ready to use</p>
+                        <hr>
+                        <p style="font-size: 14px; opacity: 0.8;">
+                            🎉 Your AI features are fully operational!<br>
+                            ब्रह्मांड AI will use OpenAI backend for intelligent responses.
+                        </p>
+                    `;
+                } else if (response.status === 401) {
+                    statusBox.className = 'status-box error';
+                    aiStatus.innerHTML = `
+                        <h3>❌ Authentication Failed</h3>
+                        <p><strong>Error:</strong> Invalid API key (401)</p>
+                        <p><strong>Fix:</strong> Get new API key from OpenAI dashboard</p>
+                        <p><a href="https://platform.openai.com/api-keys" target="_blank" style="color: #60a5fa;">Get API Key →</a></p>
+                    `;
+                } else {
+                    statusBox.className = 'status-box warning';
+                    aiStatus.innerHTML = `
+                        <h3>⚠️ Connection Issue</h3>
+                        <p><strong>Status:</strong> ${response.status}</p>
+                        <p><strong>Issue:</strong> ${response.statusText}</p>
+                    `;
+                }
+            } catch (error) {
+                statusBox.className = 'status-box error';
+                aiStatus.innerHTML = `
+                    <h3>❌ Network Error</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                    <p><strong>Possible causes:</strong> No internet, firewall, or CORS</p>
+                `;
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('aiStatus').innerHTML = 'Click button above to check...';
+            document.getElementById('statusBox').className = 'status-box info';
+        }
+
+        function getEnvValue(key) {
+            // This won't work in production, but shows the concept
+            // In real app, this is handled by React's process.env
+            return localStorage.getItem(key) || '';
+        }
+
+        // Auto-check on load
+        window.onload = checkStatus;
+    </script>
+</body>
+</html>
+

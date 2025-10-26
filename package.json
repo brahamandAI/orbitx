@@ -1,0 +1,111 @@
+{
+  "name": "orbitx-browser",
+  "version": "1.0.0",
+  "description": "OrbitX - AI-Powered Desktop Browser",
+  "author": "STARTUP ROBUSTRIX",
+  "main": "electron/main.js",
+  "homepage": "./",
+  "private": true,
+  "dependencies": {
+    "cheerio": "^1.1.2",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "lottie-react": "^2.4.1",
+    "node-fetch": "^3.3.2",
+    "playwright": "^1.55.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "start": "PORT=3003 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron": "electron . --no-sandbox",
+    "electron-dev": "concurrently \"BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron . --no-sandbox\"",
+    "electron-build": "npm run build && electron-builder",
+    "electron-pack": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder",
+    "dist-all": "npm run build && electron-builder -mwl",
+    "playwright-server": "PORT=8002 node server/start-server.js",
+    "start-with-playwright": "concurrently \"npm run playwright-server\" \"npm start\"",
+    "dev": "npm run start-with-playwright",
+    "search-server": "PORT=8002 node server.js",
+    "serve": "PORT=8002 node serve-production.js",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop all",
+    "pm2:restart": "pm2 restart all",
+    "pm2:logs": "pm2 logs",
+    "pm2:status": "pm2 status",
+    "proxy": "npm run search-server",
+    "orbitx": "concurrently \"npm run search-server\" \"npm start\"",
+    "orbitx-desktop": "npm run electron-dev",
+    "test-proxy": "node test-proxy.js",
+    "check-setup": "node check-setup.js"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "concurrently": "^9.2.1",
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3",
+    "electron-is-dev": "^3.0.1",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.0",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.robustrix.orbitx",
+    "productName": "OrbitX Browser",
+    "files": [
+      "build/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "electron/",
+        "to": "electron/",
+        "filter": ["**/*"]
+      }
+    ],
+    "directories": {
+      "buildResources": "public"
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": "dmg",
+      "icon": "public/icon.png"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "public/icon.png"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Network",
+      "icon": "public/icon.png"
+    }
+  }
+}
