@@ -19,7 +19,6 @@ const protectedBranches = ['main', 'master', 'production', 'prod'];
 if (protectedBranches.includes(currentBranch)) {
     console.log(`⚠️  Warning: You are pushing to protected branch: ${currentBranch}`);
     console.log('🔒 Protected branches should typically be updated via Pull Requests/Merge Requests.');
-    console.log('❓ Are you sure you want to continue? (This is just a warning)');
 }
 
 // Check 2: Verify .env.production.encrypted exists and is up to date
