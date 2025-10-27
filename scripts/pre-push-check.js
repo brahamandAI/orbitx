@@ -94,7 +94,16 @@ for (const script of testScripts) {
         const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
         if (packageJson.scripts && packageJson.scripts[script]) {
             console.log(`🧪 Running ${script}...`);
-            execSync(`npm run ${script}`, { 
+            let testCmd = `npm run ${script}`;
+            // If using Jest or react-scripts, add --watchAll=false to avoid interactive mode
+            const testScriptContent = packageJson.scripts[script];
+            if (
+                /jest/.test(testScriptContent) ||
+                /react-scripts\s+test/.test(testScriptContent)
+            ) {
+                testCmd += ' -- --watchAll=false';
+            }
+            execSync(testCmd, { 
                 stdio: 'inherit',
                 cwd: process.cwd()
             });
